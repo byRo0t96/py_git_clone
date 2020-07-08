@@ -92,7 +92,7 @@ def get_this_repo(user,repo_name):
 
 
 
-    rep = rep+"Repository number : "+n+"\nRepository name : "+repo_name+"\nCreated at : "+created_at+"\nlanguages : "+langs+"\n\n"
+    rep ="\nRepository name : "+repo_name+"\nCreated at : "+created_at+"\nlanguages : "+langs+"\n"
 
     return rep
         
@@ -154,7 +154,14 @@ if check_argv(1)==True:
                 cls()
                 print(get_jsonparsed_data(url,user))
             else:
+                cls()
                 print(get_this_repo(user,sys.argv[2]))
+                print('Download (y/n) ! :')
+                #x = input(vv)
+                #if vv=="y" or vv=="Y":
+                #    print('soon')
+                #else:
+                #    print('hahah')
 else:
     cls()
     print("\nUsage: python "+sys.argv[0]+" {User} {Options}\n\nUse Command: 'python "+sys.argv[0]+" -help' for more information.\n")
