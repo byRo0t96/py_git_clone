@@ -69,12 +69,14 @@ def get_jsonparsed_data(url,user):
             for key in lang_jsondata.keys():
                langs=langs+key+', '
 
-            rep = rep+"Repository number : "+n+"\nRepository name : "+repo_name+"\nCreated at : "+created_at+"\nlanguages : "+langs+"\n\n"
+            #rep = rep+"Repository number : "+n+"\nRepository name : "+repo_name+"\nCreated at : "+created_at+"\nlanguages : "+langs+"\n\n"
+            rep = "Repository number : "+n+"\nRepository name : "+repo_name+"\nCreated at : "+created_at+"\nlanguages : "+langs+"\n\n"
+            print (rep)
             #+str(r+1)+
         except ValueError:
             rep = rep
         r = r + 1
-    return rep
+    #return rep
 # e get_jsonparsed_data
 
 # s get_this_repo
@@ -150,7 +152,8 @@ if check_argv(1)==True:
             if request.status_code == 200:
                 #print (url)
                 cls()
-                print(get_jsonparsed_data(url,user))
+                #print(get_jsonparsed_data(url,user))
+                get_jsonparsed_data(url,user)
             else:
                 cls()
                 print('User: "'+user+'" does not exist')
@@ -160,7 +163,8 @@ if check_argv(1)==True:
                 per_page = "?per_page="+sys.argv[2]
                 url = ("https://api.github.com/users/"+user+"/repos"+per_page)
                 cls()
-                print(get_jsonparsed_data(url,user))
+                #print(get_jsonparsed_data(url,user))
+                get_jsonparsed_data(url,user)
             else:
                 cls()
                 print(get_this_repo(user,sys.argv[2]))
