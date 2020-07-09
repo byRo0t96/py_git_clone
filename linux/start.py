@@ -31,12 +31,56 @@ Usage:
     python """+name+""" {User} {Options}
 
 Options:
-    -h | -H | -help | -Help  : Open help paragraph.
+    -h | -H | -help | -HELP  : Open help paragraph.
     a Number [1-->infinity]  : The number of Repositories that are displayed.
     Repository Name          : Repository View information.
+    [-l | -L | -list | -LIST] + ['.txt' file name]  : In order to save the list of warehouses in one file.
 """
     return help
 #e help
+
+# s download_repo_opt
+def download_repo_opt(opt,user,nn):
+    if opt=="all" or opt=="ALL":
+        url = ("https://api.github.com/users/"+user+"/repos?per_page="+nn)
+        # check user
+        request = requests.get(url)
+        if request.status_code == 200:
+            #print (url)
+            cls()
+            response = urlopen(url)
+            data = response.read().decode("utf-8")
+            jsondata = json.loads(data)
+            r = 0
+            for i in jsondata:
+                try:
+                    n = str(r+1)
+                    c_dir(user)
+                    repo_name=jsondata[r]["name"]
+                    os.system("git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name)
+                except ValueError:
+                    rep = "ss"
+                r = r + 1
+    else:
+        url = ("https://api.github.com/users/"+user+"/repos?per_page="+nn)
+        # check user
+        request = requests.get(url)
+        if request.status_code == 200:
+            #print (url)
+            cls()
+            response = urlopen(url)
+            data = response.read().decode("utf-8")
+            jsondata = json.loads(data)
+            try:
+                #n_opt = opt - 1
+                c_dir(user)
+                repo_name=jsondata[1]["name"]
+                os.system("git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name)
+            except ValueError:
+                rep = "ss"
+        
+# e download_repo_opt
+
 
 # s get_jsonparsed_data
 def get_jsonparsed_data(url,user):
@@ -78,6 +122,39 @@ def get_jsonparsed_data(url,user):
         r = r + 1
     #return rep
 # e get_jsonparsed_data
+
+# s save_list
+def save_list(user,file_name):
+    url = ("https://api.github.com/users/"+user+"/repos?per_page=10000")
+    # check user
+    request = requests.get(url)
+    if request.status_code == 200:
+        #print (url)
+        cls()
+        response = urlopen(url)
+        data = response.read().decode("utf-8")
+        jsondata = json.loads(data)
+        rep = ''
+        r = 0
+        for i in jsondata:
+            try:
+                n = str(r+1)
+                repo_name=jsondata[r]["name"]
+                rep = rep+repo_name+"\n"
+            except ValueError:
+                rep = rep
+            r = r + 1
+        c_dir(user)
+        file = open(user+"/"+file_name, "w+") 
+        file.write(rep) 
+        file.close()
+        print("The file '"+user+"/"+file_name+"' was created.")
+
+    else:
+        cls()
+        print('User: "'+user+'" does not exist')
+        sys.exit()
+# e save_list
 
 # s get_this_repo
 def get_this_repo(user,repo_name):
@@ -136,13 +213,12 @@ while x < 100:
 if check_argv(1)==True:
     argv_1=sys.argv[1]
     # help
-    if argv_1=="-h" or argv_1=="-H" or argv_1=="-Help" or argv_1=="-help":
+    if argv_1=="-h" or argv_1=="-H" or argv_1=="-HELP" or argv_1=="-help":
         cls()
         print(help(sys.argv[0]))
     # user
     else:
         user = sys.argv[1]
-
         # default
         if check_argv(2)==False:
             per_page = "?per_page=100"
@@ -159,22 +235,45 @@ if check_argv(1)==True:
                 print('User: "'+user+'" does not exist')
                 sys.exit()
         else:
-            if sys.argv[2].isdigit()==True:
-                per_page = "?per_page="+sys.argv[2]
+            argv_2=sys.argv[2]
+            if argv_2.isdigit()==True:
+                per_page = "?per_page="+argv_2
                 url = ("https://api.github.com/users/"+user+"/repos"+per_page)
                 cls()
                 #print(get_jsonparsed_data(url,user))
                 get_jsonparsed_data(url,user)
+                print('Download (y/n) ! :')
+                x = input()
+                if x=="y" or x=="Y":
+                    print('Download (all/Repository number) ! :')
+                    y = input()
+                    if y=="all" or y=="ALL" or y.isdigit()==True:
+                        download_repo_opt(y,user,argv_2)
+                    else:
+                        sys.exit()
+                else:
+                    sys.exit()
+            elif argv_2=="-l" or argv_2=="-L" or argv_2=="-LIST" or argv_2=="-list":
+                cls()
+                try:
+                    sys.argv[3]
+                except IndexError:
+                    save_list(user,user+".txt")
+                else:
+                    save_list(user,sys.argv[3])
             else:
                 cls()
                 print(get_this_repo(user,sys.argv[2]))
                 print('Download (y/n) ! :')
-                c_dir(user)
-                os.system("cd "+user)
-                os.system("git clone https://github.com/"+user+"/"+sys.argv[2]+".git "+user+"/"+sys.argv[2])
-                os.system("cd ..")
+                x = input()
+                if x=="y" or x=="Y":
+                    c_dir(user)
+                    os.system("git clone https://github.com/"+user+"/"+sys.argv[2]+".git "+user+"/"+sys.argv[2])
+                else:
+                    sys.exit()
+
                 #git.Git(user+"/").clone("git://github.com/"+user+"/"+sys.argv[2]+".git")
-                #x = input(vv)
+                #
                 #if vv=="y" or vv=="Y":
                 #    print('soon')
                 #else:
