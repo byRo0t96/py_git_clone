@@ -35,6 +35,7 @@ Options:
     a Number [1-->infinity]  : The number of Repositories that are displayed.
     Repository Name          : Repository View information.
     [-l | -L | -list | -LIST] + ['.txt' file name]  : In order to save the list of warehouses in one file.
+    -d | -D | -download | -DOWNLOAD : Download Repositories from .txt file.
 """
     return help
 #e help
@@ -61,7 +62,7 @@ def download_repo_opt(opt,user,nn):
                 except ValueError:
                     rep = "ss"
                 r = r + 1
-    else:
+    elif opt.isdigit()==True:
         url = ("https://api.github.com/users/"+user+"/repos?per_page="+nn)
         # check user
         request = requests.get(url)
@@ -72,9 +73,10 @@ def download_repo_opt(opt,user,nn):
             data = response.read().decode("utf-8")
             jsondata = json.loads(data)
             try:
+                ssss = int(opt)-1
                 #n_opt = opt - 1
                 c_dir(user)
-                repo_name=jsondata[1]["name"]
+                repo_name=jsondata[ssss]["name"]
                 os.system("git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name)
             except ValueError:
                 rep = "ss"
@@ -123,6 +125,22 @@ def get_jsonparsed_data(url,user):
     #return rep
 # e get_jsonparsed_data
 
+# s download_list
+def download_list(user,txtfile,d_type):
+    a_file = open(txtfile)
+    lines = a_file.readlines()
+    for line in lines:
+        if d_type=="split":
+            x = line.split(":")
+            c_dir(x[0])
+            os.system("git clone https://github.com/"+x[0]+"/"+x[1]+".git "+x[0]+"/"+x[1])
+        else:
+            c_dir(user)
+            os.system("git clone https://github.com/"+user+"/"+line+".git "+user+"/"+line)
+        #print(line)
+# e download_list
+
+
 # s save_list
 def save_list(user,file_name):
     url = ("https://api.github.com/users/"+user+"/repos?per_page=10000")
@@ -140,7 +158,8 @@ def save_list(user,file_name):
             try:
                 n = str(r+1)
                 repo_name=jsondata[r]["name"]
-                rep = rep+repo_name+"\n"
+                rep = rep+user+":"+repo_name+"\n"
+                print(user+":"+repo_name)
             except ValueError:
                 rep = rep
             r = r + 1
@@ -216,6 +235,16 @@ if check_argv(1)==True:
     if argv_1=="-h" or argv_1=="-H" or argv_1=="-HELP" or argv_1=="-help":
         cls()
         print(help(sys.argv[0]))
+    elif argv_1=="-d" or argv_1=="-D" or argv_1=="-DOWNMOAD" or argv_1=="-download":
+        cls()
+        try:
+            sys.argv[2]
+        except IndexError:
+            #download_list(user,user+".txt")
+            print("\nYou did not enter a file name\n")
+        else:
+            user="null"
+            download_list(user,sys.argv[2],"split")
     # user
     else:
         user = sys.argv[1]
@@ -261,6 +290,15 @@ if check_argv(1)==True:
                     save_list(user,user+".txt")
                 else:
                     save_list(user,sys.argv[3])
+            elif argv_2=="-d" or argv_2=="-D" or argv_2=="-DOWNMOAD" or argv_2=="-download":
+                cls()
+                try:
+                    sys.argv[3]
+                except IndexError:
+                    #download_list(user,user+".txt")
+                    print("\nYou did not enter a file name\n")
+                else:
+                    download_list(user,sys.argv[3],"no_type")
             else:
                 cls()
                 print(get_this_repo(user,sys.argv[2]))
