@@ -58,7 +58,10 @@ def download_repo_opt(opt,user,nn):
                     n = str(r+1)
                     c_dir(user)
                     repo_name=jsondata[r]["name"]
-                    os.system("git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name)
+                   
+                    linux = "git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name
+                    windows = ''
+                    os.system([linux, windows][os.name == 'nt'])
                 except ValueError:
                     rep = "ss"
                 r = r + 1
@@ -77,7 +80,11 @@ def download_repo_opt(opt,user,nn):
                 #n_opt = opt - 1
                 c_dir(user)
                 repo_name=jsondata[ssss]["name"]
-                os.system("git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name)
+
+                linux = "git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name
+                windows = ''
+                os.system([linux, windows][os.name == 'nt'])
+
             except ValueError:
                 rep = "ss"
         
@@ -133,11 +140,20 @@ def download_list(user,txtfile,d_type):
         if d_type=="split":
             x = line.split(":")
             c_dir(x[0])
-            os.system("git clone https://github.com/"+x[0]+"/"+x[1]+".git "+x[0]+"/"+x[1])
+
+            s = x[1].replace("\n", "")
+
+            linux = "git clone https://github.com/"+x[0]+"/"+s+".git "+x[0]+"/"+s
+            windows = ''
+            os.system([linux, windows][os.name == 'nt'])
+            #print(s)
+
         else:
             c_dir(user)
-            os.system("git clone https://github.com/"+user+"/"+line+".git "+user+"/"+line)
-        #print(line)
+            s = line.replace("\n", "")
+            linux = "git clone https://github.com/"+user+"/"+s+".git "+user+"/"+s
+            windows = ''
+            os.system([linux, windows][os.name == 'nt'])
 # e download_list
 
 
@@ -306,7 +322,9 @@ if check_argv(1)==True:
                 x = input()
                 if x=="y" or x=="Y":
                     c_dir(user)
-                    os.system("git clone https://github.com/"+user+"/"+sys.argv[2]+".git "+user+"/"+sys.argv[2])
+                    linux = "git clone https://github.com/"+user+"/"+sys.argv[2]+".git "+user+"/"+sys.argv[2]
+                    windows = ''
+                    os.system([linux, windows][os.name == 'nt'])
                 else:
                     sys.exit()
 
@@ -319,34 +337,4 @@ if check_argv(1)==True:
 else:
     cls()
     print("\nUsage: python "+sys.argv[0]+" {User} {Options}\n\nUse Command: 'python "+sys.argv[0]+" -help' for more information.\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
