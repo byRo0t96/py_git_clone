@@ -3,11 +3,7 @@
 'py_git_clone' It is a tool to facilitate browsing the Repositories and download or save a list of them or download a dedicated list ... from the github platform.
 
 <div align="center">
-        <img alt="py_git_clone" src="./Screenshot/Screenshot-1.png">
-        
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/IAPB1c6lu5w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        
-        
+        <img alt="py_git_clone" src="./Screenshot/Screenshot-1.png">   
 </div>
 
 
