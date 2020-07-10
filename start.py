@@ -3,22 +3,17 @@ import json
 import sys
 import requests
 import os
-import pathlib
-
-#import git
-#sudo apt install git-all
-
 
 try:
     # For Python 3.0 and later
     from urllib.request import urlopen
+    import pathlib
 except ImportError:
     # Fall back to Python 2's urllib2
     from urllib2 import urlopen
-
+    import pathlib2
 def c_dir(dirname):
     pathlib.Path(dirname).mkdir(parents=True, exist_ok=True)
-
 def cls():
     linux = 'clear'
     windows = 'cls'
@@ -32,13 +27,64 @@ Usage:
 
 Options:
     -h | -H | -help | -HELP  : Open help paragraph.
+    -l | -L | -list | -LIST |+| ['.txt' file name]  : In order to save the list of warehouses in one file.
+    -d | -D | -download | -DOWNLOAD : Download Repositories from .txt file.
+    -a | -A | -about | -ABOUT : View tool information.
+
     a Number [1-->infinity]  : The number of Repositories that are displayed.
     Repository Name          : Repository View information.
-    [-l | -L | -list | -LIST] + ['.txt' file name]  : In order to save the list of warehouses in one file.
-    -d | -D | -download | -DOWNLOAD : Download Repositories from .txt file.
+
+    -u | -U | -update | -UPDATE : soon.
 """
     return help
 #e help
+
+# s about
+def about():
+
+    logo = """
+┌─┐┬ ┬  ┌─┐┬┌┬┐  ┌─┐┬  ┌─┐┌┐┌┌─┐
+├─┘└┬┘  │ ┬│ │   │  │  │ ││││├┤ 
+┴   ┴   └─┘┴ ┴   └─┘┴─┘└─┘┘└┘└─┘
+"""
+
+    a_file = open("version.txt")
+    lines = a_file.readlines()
+    for line in lines:
+        version = "Version : "+line+""
+        version_n = line.replace(".", "")
+    tool_name = "Tool Name : py_git_clone\n"
+    pro_by = "programmed by : byRo0t96\n"
+    website = "WebSite : https://byro0t96.github.io/\n"
+    github = "Github : https://github.com/byRo0t96/\n"
+    email = "E-mail : by.root96@gmail.com\n"
+    
+
+    about=logo+"\n"+version+tool_name+pro_by+website+github+email+"\n"+new_version(version_n)+"\n"
+    return about
+# e about
+
+
+# s new version
+def new_version(version_n):
+    url = "https://raw.githubusercontent.com/byRo0t96/py_git_clone/master/version.txt"
+    request = requests.get(url)
+    if request.status_code == 200:
+        response = urlopen(url)
+        data = response.read().decode("utf-8")
+        data_n = data.replace(".", "")
+    else:
+        data_n="000"
+
+    if data_n > version_n:
+        new_version = "There is a new version of this tool\033[05m "+data+" \033[25m"
+    elif data_n == version_n:
+        new_version = "You are using the latest version of this tool."
+    else:
+        new_version = "There are no updates currently."
+    return new_version
+# e new version
+
 
 # s download_repo_opt
 def download_repo_opt(opt,user,nn):
@@ -58,7 +104,6 @@ def download_repo_opt(opt,user,nn):
                     n = str(r+1)
                     c_dir(user)
                     repo_name=jsondata[r]["name"]
-                   
                     linux = "git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name
                     windows = ''
                     os.system([linux, windows][os.name == 'nt'])
@@ -80,29 +125,23 @@ def download_repo_opt(opt,user,nn):
                 #n_opt = opt - 1
                 c_dir(user)
                 repo_name=jsondata[ssss]["name"]
-
                 linux = "git clone https://github.com/"+user+"/"+repo_name+".git "+user+"/"+repo_name
                 windows = ''
                 os.system([linux, windows][os.name == 'nt'])
-
             except ValueError:
                 rep = "ss"
-        
 # e download_repo_opt
 
 
 # s get_jsonparsed_data
 def get_jsonparsed_data(url,user):
-    
     try:
         response = urlopen(url)
         data = response.read().decode("utf-8")
     except ValueError:
         with open(url, 'r') as json_lical_file:
             data=json_lical_file.read()
-    
     jsondata = json.loads(data)
-
     rep = ''
     r = 0
     for i in jsondata:
@@ -110,14 +149,10 @@ def get_jsonparsed_data(url,user):
             n = str(r+1)
             created_at=jsondata[r]["created_at"]
             repo_name=jsondata[r]["name"]
-            #repo_lang=jsondata[r]["clone_url"]
-            
-
             lang_url="https://api.github.com/repos/"+user+"/"+repo_name+"/languages"
             lang_response = urlopen(lang_url)
             lang_data = lang_response.read().decode("utf-8")
             lang_jsondata = json.loads(lang_data)
-            
             langs=""
             for key in lang_jsondata.keys():
                langs=langs+key+', '
@@ -251,6 +286,13 @@ if check_argv(1)==True:
     if argv_1=="-h" or argv_1=="-H" or argv_1=="-HELP" or argv_1=="-help":
         cls()
         print(help(sys.argv[0]))
+    elif argv_1=="-a" or argv_1=="-A" or argv_1=="-ABOUT" or argv_1=="-about":
+        cls()
+        print(about())
+    elif argv_1=="-u" or argv_1=="-U" or argv_1=="-UPDATE" or argv_1=="-update":
+        cls()
+        print("soon\n")
+        sys.exit()
     elif argv_1=="-d" or argv_1=="-D" or argv_1=="-DOWNMOAD" or argv_1=="-download":
         cls()
         try:
@@ -327,13 +369,6 @@ if check_argv(1)==True:
                     os.system([linux, windows][os.name == 'nt'])
                 else:
                     sys.exit()
-
-                #git.Git(user+"/").clone("git://github.com/"+user+"/"+sys.argv[2]+".git")
-                #
-                #if vv=="y" or vv=="Y":
-                #    print('soon')
-                #else:
-                #    print('hahah')
 else:
     cls()
     print("\nUsage: python "+sys.argv[0]+" {User} {Options}\n\nUse Command: 'python "+sys.argv[0]+" -help' for more information.\n")
