@@ -4,7 +4,7 @@
 
 <div align="center">
         <img alt="py_git_clone" src="./Screenshot/Screenshot-1.png"><br>
-        <a href="https://youtu.be/IAPB1c6lu5w"><img alt="py_git_clone" style="height: 100px;" src="https://raw.githubusercontent.com/byRo0t96/data/master/images/youtube_Watch.png"></a>
+        <a href="https://youtu.be/IAPB1c6lu5w"><img alt="py_git_clone" height="100" src="https://raw.githubusercontent.com/byRo0t96/data/master/images/youtube_Watch.png"></a>
 </div>
 
 
@@ -115,6 +115,6 @@ python start.py -d repositories_list.txt
 Copyright (C) 2010 - 2020 [byRo0t96](https://byro0t96.github.io/)
 
 <div align="center">
-        <a href="https://byro0t96.github.io/"><img alt="byRo0t96" style="height: 100px;" src="https://raw.githubusercontent.com/byRo0t96/data/master/images/Ro0t-96_v.3.1.png"></a>
+        <a href="https://byro0t96.github.io/"><img alt="byRo0t96" height="100" src="https://raw.githubusercontent.com/byRo0t96/data/master/images/Ro0t-96_v.3.1.png"></a>
 </div>
 
