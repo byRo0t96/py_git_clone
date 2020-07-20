@@ -114,7 +114,11 @@ python start.py -d repositories_list.txt
 ### Contact :
 ##### Mail : by.root96@gmail.com
 
-<iframe src="https://money.yandex.ru/quickpay/button-widget?targets=Support%20and%20assistance&default-sum=410&button-text=14&yamoney-payment-type=on&button-size=m&button-color=orange&successURL=&quickpay=small&account=410018413831485&" width="184" height="36" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+
+[![yandex](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://money.yandex.ru/to/410018413831485)
+
+
+
 
 ## License
 Copyright (C) 2010 - 2020 [byRo0t96](https://byro0t96.github.io/)
