@@ -66,11 +66,6 @@ Review a certain number of Repositories.
 python start.py {User} {a Number }
 ```
 
-Review a certain number of Repositories.
-```
-python start.py {User} {a Number }
-```
-
 Repository View information.
 ```
 python start.py {User} {Repository}
